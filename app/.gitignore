@@ -44,6 +44,7 @@ secrets.xml
 google-services.json
 GoogleService-Info.plist
 
+
 # --- Project Specific ---
 # If you use CocoaPods for iOS dependencies
 .bundle/
