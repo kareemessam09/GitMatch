@@ -1,0 +1,18 @@
+# Secrets — never commit these
+.env
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.class
+
+# Spring Boot
+*.log
+application.properties.bak

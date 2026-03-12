@@ -1,0 +1,21 @@
+                                 Table "public.news_items"
+         Column          |              Type              | Collation | Nullable | Default 
+-------------------------+--------------------------------+-----------+----------+---------
+ id                      | uuid                           |           | not null | 
+ ai_one_sentence_summary | text                           |           |          | 
+ ai_three_bullet_tldr    | text                           |           |          | 
+ author                  | text                           |           |          | 
+ content_source          | character varying(255)         |           |          | 
+ created_at              | timestamp(6) without time zone |           |          | 
+ is_release_note         | boolean                        |           |          | 
+ published_date          | timestamp(6) without time zone |           |          | 
+ source_url              | text                           |           | not null | 
+ title                   | text                           |           | not null | 
+ updated_at              | timestamp(6) without time zone |           |          | 
+ image_url               | text                           |           |          | 
+Indexes:
+    "news_items_pkey" PRIMARY KEY, btree (id)
+    "ukgw7i7bqd4k8eeho4r1w4bd318" UNIQUE CONSTRAINT, btree (source_url)
+Check constraints:
+    "news_items_content_source_check" CHECK (content_source::text = ANY (ARRAY['GITHUB'::character varying, 'DEVTO'::character varying, 'HACKERNEWS'::character varying, 'MEDIUM'::character varying, 'RELEASE_NOTES'::character varying]::text[]))
+
