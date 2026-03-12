@@ -1,0 +1,53 @@
+# --- IDE & General ---
+.idea/
+*.iml
+.DS_Store
+.gradle/
+build/
+.kotlin/
+
+# --- Android ---
+local.properties
+capture.png
+*.apk
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+
+# --- iOS (Xcode & Kotlin Native) ---
+# It's important to ignore the generated Kotlin artifacts for iOS
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+.xcworkspace/
+!default.xcworkspace
+**/iosApp.xcodeproj/project.xcworkspace
+**/iosApp.xcodeproj/xcuserdata
+
+# Ignore the build artifacts from Kotlin Native
+.konan/
+kotlin-native-macos*/
+kotlin-native-linux*/
+kotlin-native-windows*/
+
+# --- Compose Multiplatform Resources ---
+# Generated resource accessors
+**/build/generated/moko/
+**/src/commonMain/kotlin/RESOURCES.kt
+
+# --- Secrets & Environment ---
+# Crucial: Ignore your local secrets
+*.env
+secrets.xml
+google-services.json
+GoogleService-Info.plist
+
+
+# --- Project Specific ---
+# If you use CocoaPods for iOS dependencies
+.bundle/
+vendor/
+Podfile.lock
+Pods/

@@ -45,9 +45,9 @@ object HttpClientFactory {
 }
 
 object ApiConfig {
-    // Use your machine's LAN IP for physical device testing
-    const val BASE_URL = "http://192.168.1.112:8080/api/v1/"
+    // Use your deployed Fly.io instance URL
+    const val BASE_URL = "https://backend-summer-paper-9763.fly.dev/api/v1/"
 
     // Base URL without /api/v1/ — used for OAuth redirect URLs
-    const val AUTH_BASE_URL = "http://192.168.1.112:8080"
+    const val AUTH_BASE_URL = "https://backend-summer-paper-9763.fly.dev"
 }

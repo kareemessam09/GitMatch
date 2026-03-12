@@ -147,17 +147,9 @@ fun App(
 
                     LoginScreen(
                         uiState = uiState,
-                        onSignInWithGitHub = {
-                            viewModel.onIntent(LoginIntent.SignInWithGitHub)
-                            onOpenOAuthUrl(viewModel.getOAuthUrl("github"))
-                        },
-                        onSignInWithGoogle = {
-                            viewModel.onIntent(LoginIntent.SignInWithGoogle)
-                            onOpenOAuthUrl(viewModel.getOAuthUrl("google"))
-                        },
-                        onDismissError = {
-                            viewModel.onIntent(LoginIntent.DismissError)
-                        }
+                        onIntent = viewModel::onIntent,
+                        onOpenOAuthUrl = onOpenOAuthUrl,
+                        getOAuthUrl = viewModel::getOAuthUrl
                     )
                 }
 

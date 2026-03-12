@@ -48,6 +48,24 @@ class LoginViewModel(
                 handleToken(intent.token)
             }
 
+            is LoginIntent.UpdateManualToken -> {
+                _uiState.update { it.copy(manualToken = intent.token) }
+            }
+
+            is LoginIntent.SubmitManualToken -> {
+                val tokenToSubmit = _uiState.value.manualToken.trim()
+                if (tokenToSubmit.isNotEmpty()) {
+                    // Extract token if user pasted the full URL (e.g. gitmatch://login?token=XYZ)
+                    val actualToken = if (tokenToSubmit.contains("token=")) {
+                        tokenToSubmit.substringAfter("token=").substringBefore("&")
+                    } else {
+                        tokenToSubmit
+                    }
+                    handleToken(actualToken)
+                    _uiState.update { it.copy(manualToken = "") }
+                }
+            }
+
             is LoginIntent.DismissError -> {
                 _uiState.update { it.copy(errorMessage = null) }
             }
