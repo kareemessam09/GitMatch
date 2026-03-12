@@ -1,9 +1,0 @@
-                  id                  |                                  title                                   | processed | content_source 
---------------------------------------+--------------------------------------------------------------------------+-----------+----------------
- 4a8fd7a7-ac73-419e-9766-e8780978b8f9 | Show HN: I built a tool that watches webpages and exposes changes as RSS | t         | HACKERNEWS
- fc1ff4b7-b256-4bf4-a0e5-2aab2629193a | Personal Computer by Perplexity                                          | t         | HACKERNEWS
- 1ccff3cd-486a-48c6-b54c-37aef03136dc | Dependabot now supports pre-commit hooks - The GitHub Blog               | t         | RELEASE_NOTES
- b2ba710f-8868-4eef-830d-dcf78545a0dc | Request Copilot code review from GitHub CLI - The GitHub Blog            | t         | RELEASE_NOTES
- 87f55c60-2b08-404e-9131-b6921597f996 | Will AI Eat Software? - Goldman Sachs                                    | t         | RELEASE_NOTES
-(5 rows)
-
