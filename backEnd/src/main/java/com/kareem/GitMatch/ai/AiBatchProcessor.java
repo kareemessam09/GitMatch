@@ -36,6 +36,8 @@ public class AiBatchProcessor {
     private final NewsItemRepository newsRepository;
     private final ObjectMapper objectMapper;
 
+    private boolean processRepoNext = true;
+
     public AiBatchProcessor(GeminiClient geminiClient,
                             RepositoryItemRepository repoRepository,
                             NewsItemRepository newsRepository,
@@ -52,21 +54,36 @@ public class AiBatchProcessor {
      */
     @Scheduled(fixedDelay = 30_000, initialDelay = 10_000)
     public void processNextItem() {
-        // Try one unprocessed repo first
-        List<RepositoryItem> repos = repoRepository
-                .findByAiOneSentenceSummaryIsNull(PageRequest.of(0, 1));
+        if (processRepoNext) {
+            List<RepositoryItem> repos = repoRepository
+                    .findByAiOneSentenceSummaryIsNull(PageRequest.of(0, 1));
 
-        if (!repos.isEmpty()) {
-            processRepo(repos.getFirst());
-            return;
+            if (!repos.isEmpty()) {
+                processRepo(repos.getFirst());
+                processRepoNext = false; // Next time, try a news item
+                return;
+            }
+            // If no repos, fall through and try news anyway
+            processRepoNext = false;
         }
 
-        // No repos left — try one unprocessed news item
         List<NewsItem> news = newsRepository
                 .findByAiOneSentenceSummaryIsNull(PageRequest.of(0, 1));
 
         if (!news.isEmpty()) {
             processNewsItem(news.getFirst());
+            processRepoNext = true; // Next time, try a repo item
+            return;
+        }
+
+        // If we tried news and had none, maybe there's a repo?
+        processRepoNext = true;
+        
+        List<RepositoryItem> repos = repoRepository
+                .findByAiOneSentenceSummaryIsNull(PageRequest.of(0, 1));
+
+        if (!repos.isEmpty()) {
+            processRepo(repos.getFirst());
             return;
         }
 
