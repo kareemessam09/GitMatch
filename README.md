@@ -1,6 +1,8 @@
 # GitMatch
 
-<img src="logo.png" alt="GitMatch" width="200">
+<p align="center">
+  <img src="logo.png" alt="GitMatch" width="400">
+</p>
 
 A Tinder-style app for discovering GitHub repos and tech news. Swipe right to save/star, left to skip, up for details.
 
