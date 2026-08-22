@@ -2,6 +2,8 @@
 
 A Tinder-style app for discovering GitHub repos and tech news. Swipe right to save/star, left to skip, up for details.
 
+[▶ Watch the preview video](https://lnkd.in/p/eAeut4gz)
+
 Built with Kotlin Multiplatform (Compose) on the frontend and Spring Boot + PostgreSQL on the backend. Uses Gemini API to generate short summaries of repos and articles.
 
 ## Tech Stack
