@@ -8,9 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Root endpoint providing API documentation and health check.
- */
+
 @RestController
 public class ApiDocController {
 

@@ -23,9 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Handles swipe action recording and retrieval of swiped items.
- */
+
 @Service
 public class SwipeService {
 
@@ -46,13 +44,7 @@ public class SwipeService {
         this.repositoryItemRepository = repositoryItemRepository;
     }
 
-    /**
-     * Records a swipe action. If the user swipes RIGHT on a REPO,
-     * it may trigger an async GitHub star operation.
-     *
-     * @param request the swipe request DTO
-     * @return the persisted SwipeAction
-     */
+
     @Transactional
     public SwipeAction recordSwipe(SwipeRequest request) {
         log.info("Recording swipe: user={}, item={}, direction={}", request.userId(), request.itemId(), request.direction());
@@ -70,7 +62,7 @@ public class SwipeService {
 
         SwipeAction saved = swipeActionRepository.save(action);
 
-        // If user swiped RIGHT on a repo, async star it on GitHub
+
         if (request.direction() == SwipeDirection.RIGHT && request.itemType() == FeedItemType.REPO) {
             log.info("Right swipe on repo — triggering async GitHub star for item {}", request.itemId());
             asyncStarOnGitHub(request.userId(), request.itemId());
@@ -79,10 +71,7 @@ public class SwipeService {
         return saved;
     }
 
-    /**
-     * Convenience method for mobile clients: determines the item type server-side
-     * so the mobile app only needs to send itemId + direction.
-     */
+
     @Transactional
     public SwipeAction recordSwipe(UUID userId, UUID itemId, SwipeDirection direction) {
         FeedItemType itemType = repositoryItemRepository.existsById(itemId)
@@ -91,10 +80,7 @@ public class SwipeService {
         return recordSwipe(new SwipeRequest(userId, itemId, itemType, direction));
     }
 
-    /**
-     * Asynchronously stars a repository on GitHub using the user's stored access token.
-     * Runs on a separate thread pool so the swipe API returns instantly.
-     */
+
     @Async("aiTaskExecutor")
     public void asyncStarOnGitHub(UUID userId, UUID itemId) {
         try {
@@ -122,30 +108,18 @@ public class SwipeService {
 
         } catch (Exception e) {
             log.error("Async auto-star failed for user={}, item={}: {}", userId, itemId, e.getMessage());
-            // Graceful degradation — swipe is already saved, star failure is non-critical
+    
         }
     }
 
-    /**
-     * Retrieves the user's right-swiped items (their "Vault").
-     *
-     * @param userId the user's ID
-     * @param page   the page number
-     * @param size   items per page
-     * @return a page of liked swipe actions
-     */
+
     @Transactional(readOnly = true)
     public Page<SwipeAction> getLikedItems(UUID userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
         return swipeActionRepository.findByUserIdAndDirection(userId, SwipeDirection.RIGHT, pageable);
     }
 
-    /**
-     * Retrieves all swipe actions for a user.
-     *
-     * @param userId the user's ID
-     * @return list of all swipe actions
-     */
+
     @Transactional(readOnly = true)
     public List<SwipeAction> getSwipeHistory(UUID userId) {
         return swipeActionRepository.findByUserId(userId);

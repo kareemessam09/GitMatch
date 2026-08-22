@@ -6,9 +6,7 @@ import com.kareem.GitMatch.core.enums.AuthProvider;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Safe user profile DTO — never exposes sensitive tokens to the client.
- */
+
 public record UserProfileResponse(
         UUID id,
         String githubUsername,
@@ -21,9 +19,7 @@ public record UserProfileResponse(
         List<String> preferredTopics
 ) {
 
-    /**
-     * Maps an AppUser entity to a safe profile response.
-     */
+
     public static UserProfileResponse from(AppUser user) {
         return new UserProfileResponse(
                 user.getId(),

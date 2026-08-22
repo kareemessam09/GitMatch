@@ -12,12 +12,7 @@ import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-/**
- * JPA AttributeConverter that encrypts/decrypts sensitive strings (e.g., GitHub tokens)
- * using AES-256-GCM before storing them in PostgreSQL.
- *
- * The encryption key is injected via a static holder set at application startup.
- */
+
 @Converter
 public class TokenEncryptionConverter implements AttributeConverter<String, String> {
 
@@ -26,9 +21,7 @@ public class TokenEncryptionConverter implements AttributeConverter<String, Stri
     private static final int GCM_IV_LENGTH = 12;
     private static final int GCM_TAG_LENGTH = 128;
 
-    /**
-     * Static key holder — set by {@link TokenEncryptionInitializer} at startup.
-     */
+
     private static volatile String encryptionKey;
 
     static void setEncryptionKey(String key) {

@@ -15,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.CompletableFuture;
 
-/**
- * Async service that processes entities through the Gemini AI to generate
- * summaries, bullet points, code snippets, and tags.
- */
+
 @Service
 public class AiProcessorService {
 
@@ -29,10 +26,7 @@ public class AiProcessorService {
     private final NewsItemRepository newsRepository;
     private final ObjectMapper objectMapper;
 
-    /**
-     * Prompt template for repository summarization.
-     * Instructs Gemini to return strict JSON.
-     */
+
     public static final String REPO_SUMMARY_PROMPT = """
             You are a technical assistant. Analyze the following GitHub repository information.
             Return ONLY a valid JSON object with these exact keys:
@@ -56,9 +50,7 @@ public class AiProcessorService {
             Description: %s
             """;
 
-    /**
-     * Prompt template for news article summarization.
-     */
+
     public static final String NEWS_SUMMARY_PROMPT = """
             You are a technical assistant. Analyze the following tech news article or release note.
             Return ONLY a valid JSON object with these exact keys:
@@ -84,13 +76,7 @@ public class AiProcessorService {
         this.objectMapper = objectMapper;
     }
 
-    /**
-     * Asynchronously processes a repository item through Gemini AI
-     * to generate a summary, bullets, and code snippet.
-     *
-     * @param repoId the repository item ID
-     * @return a CompletableFuture that completes when processing is done
-     */
+
     @Async("aiTaskExecutor")
     @Transactional
     public CompletableFuture<Void> processRepository(java.util.UUID repoId) {
@@ -140,19 +126,13 @@ public class AiProcessorService {
             }
         } catch (Exception e) {
             log.error("AI processing failed for repository {}: {}", repoId, e.getMessage());
-            // Graceful degradation — entity keeps its original description
+
         }
 
         return CompletableFuture.completedFuture(null);
     }
 
-    /**
-     * Asynchronously processes a news item through Gemini AI
-     * to generate a summary and bullet points.
-     *
-     * @param newsId the news item ID
-     * @return a CompletableFuture that completes when processing is done
-     */
+
     @Async("aiTaskExecutor")
     @Transactional
     public CompletableFuture<Void> processNewsItem(java.util.UUID newsId) {
@@ -197,7 +177,7 @@ public class AiProcessorService {
             }
         } catch (Exception e) {
             log.error("AI processing failed for news item {}: {}", newsId, e.getMessage());
-            // Graceful degradation — entity keeps its original data
+
         }
 
         return CompletableFuture.completedFuture(null);

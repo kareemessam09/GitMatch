@@ -18,10 +18,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-/**
- * Handles the OAuth2 callback after a user successfully authenticates with GitHub or Google.
- * Creates or updates the AppUser, generates a JWT, and redirects to the mobile app deep link.
- */
+
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
@@ -79,7 +76,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String displayName = oAuth2User.getAttribute("name");
         String avatarUrl = oAuth2User.getAttribute("avatar_url");
 
-        // Retrieve the OAuth2 access token from the authorized client
+
         String accessToken = null;
         try {
             OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
@@ -103,7 +100,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             user = appUserRepository.save(user);
             log.info("Created new GitHub user: id={}, username={}", user.getId(), githubUsername);
         } else {
-            // Update profile info on each login
+    
             user.setEmail(email);
             user.setDisplayName(displayName);
             user.setAvatarUrl(avatarUrl);

@@ -10,9 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/**
- * Security configuration with OAuth2 login (GitHub + Google) and stateless JWT authentication.
- */
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -30,14 +28,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            // IF_REQUIRED allows OAuth2's authorization code exchange to use a session,
-            // but the mobile app's JWT-based API calls remain stateless.
+
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
             .authorizeHttpRequests(auth -> auth
-                // Public endpoints
+
                 .requestMatchers("/oauth2/**", "/login/**").permitAll()
                 .requestMatchers("/api/v1/users/available-topics").permitAll()
-                // All other API endpoints require authentication
+
                 .requestMatchers("/api/v1/**").authenticated()
                 .anyRequest().permitAll()
             )

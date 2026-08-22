@@ -7,9 +7,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 
-/**
- * Configures async execution with a custom thread pool for AI processing tasks.
- */
+
 @Configuration
 @EnableAsync
 public class AsyncConfig {

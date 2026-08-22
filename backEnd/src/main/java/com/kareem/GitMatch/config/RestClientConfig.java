@@ -6,9 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 
-/**
- * Configures RestClient beans for external API communication.
- */
+
 @Configuration
 public class RestClientConfig {
 

@@ -8,9 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Represents a GitHub repository discovered by the Harvester.
- */
+
 @Entity
 @Table(name = "repository_items")
 public class RepositoryItem {
@@ -85,7 +83,6 @@ public class RepositoryItem {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // No-arg constructor required by JPA
     protected RepositoryItem() {}
 
     public RepositoryItem(String githubId, String name, String owner, String url,
@@ -108,7 +105,6 @@ public class RepositoryItem {
         this.contentSource = ContentSource.GITHUB;
     }
 
-    // Getters
     public UUID getId() { return id; }
     public String getGithubId() { return githubId; }
     public String getName() { return name; }
@@ -132,7 +128,6 @@ public class RepositoryItem {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
-    // Setters for fields that may be updated after creation
     public void setAiOneSentenceSummary(String aiOneSentenceSummary) {
         this.aiOneSentenceSummary = aiOneSentenceSummary;
     }

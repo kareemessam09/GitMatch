@@ -14,10 +14,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.UUID;
 
-/**
- * Extracts and validates the JWT from the Authorization header on every request.
- * If valid, sets the authenticated user in the Spring SecurityContext.
- */
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 

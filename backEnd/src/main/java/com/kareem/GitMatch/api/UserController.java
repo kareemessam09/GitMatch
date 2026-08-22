@@ -18,19 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * Handles user profile, preferences, and authentication-related endpoints.
- */
+
 @RestController
 @RequestMapping("/api/v1/users")
 @Tag(name = "Users", description = "User profile and preference management")
 @SecurityRequirement(name = "Bearer Authentication")
 public class UserController {
 
-    /**
-     * Master list of available topics/interests.
-     * The mobile app fetches this list for onboarding — single source of truth.
-     */
+
     public static final List<String> AVAILABLE_TOPICS = List.of(
             "Android", "iOS", "Kotlin", "Java", "Python",
             "Rust", "Go", "TypeScript", "React", "AI/ML",
@@ -44,18 +39,14 @@ public class UserController {
         this.appUserRepository = appUserRepository;
     }
 
-    /**
-     * Returns the master list of available topics for onboarding.
-     */
+
     @GetMapping("/available-topics")
     @Operation(summary = "Get available topics", description = "Returns the master list of available topics for onboarding", security = {})
     public ResponseEntity<List<String>> getAvailableTopics() {
         return ResponseEntity.ok(AVAILABLE_TOPICS);
     }
 
-    /**
-     * Gets a user's profile by ID.
-     */
+
     @GetMapping("/{userId}")
     @Operation(summary = "Get user by ID", description = "Gets a user's profile by ID")
     public ResponseEntity<AppUser> getUser(
@@ -65,10 +56,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    /**
-     * Updates the authenticated user's preferred topics.
-     * Accepts the format: { "preferredTopics": ["Android", "Kotlin", ...] }
-     */
+
     @PutMapping("/preferences")
     @Operation(summary = "Update preferences", description = "Updates the authenticated user's preferred languages and topics")
     public ResponseEntity<AppUser> updatePreferences(
@@ -88,10 +76,7 @@ public class UserController {
         return ResponseEntity.ok(saved);
     }
 
-    /**
-     * Convenience POST endpoint for the mobile app onboarding flow.
-     * Accepts: { "preferredTopics": ["Android", "Kotlin", ...] }
-     */
+
     @PostMapping("/preferences")
     @Operation(summary = "Save preferences", description = "Convenience POST endpoint for the mobile app onboarding flow")
     public ResponseEntity<AppUser> savePreferences(
@@ -100,10 +85,7 @@ public class UserController {
         return updatePreferences(userId, request);
     }
 
-    /**
-     * Returns the authenticated user's profile (from the JWT).
-     * The mobile app calls this after login to get the user's info.
-     */
+
     @GetMapping("/me")
     @Operation(summary = "Get current user", description = "Returns the authenticated user's profile from the JWT")
     public ResponseEntity<UserProfileResponse> getCurrentUser(
@@ -113,10 +95,7 @@ public class UserController {
         return ResponseEntity.ok(UserProfileResponse.from(user));
     }
 
-    /**
-     * Allows a Google-authenticated user to manually provide a GitHub Personal Access Token
-     * so they can still use the auto-star feature without GitHub OAuth.
-     */
+
     @PutMapping("/me/github-token")
     @Operation(summary = "Set GitHub token", description = "Allows a Google-authenticated user to manually provide a GitHub Personal Access Token")
     public ResponseEntity<Map<String, String>> setGithubToken(
@@ -134,7 +113,7 @@ public class UserController {
 
         user.setGithubAccessToken(token);
 
-        // If user also provides a GitHub username, save it
+
         String username = body.get("githubUsername");
         if (username != null && !username.isBlank()) {
             user.setGithubUsername(username);

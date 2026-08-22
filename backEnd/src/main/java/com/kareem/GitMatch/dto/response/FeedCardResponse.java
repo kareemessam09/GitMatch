@@ -7,10 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Unified feed card response DTO for the mobile app.
- * Both repositories and news items map to this single format.
- */
+
 public record FeedCardResponse(
     UUID id,
     FeedItemType type,

@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Provides the discovery feed endpoints for the mobile app.
- * All endpoints use the authenticated user's ID from the JWT.
- */
+
 @RestController
 @RequestMapping("/api/v1/feed-cards")
 @Tag(name = "Feed", description = "Discovery feed endpoints for repositories and news")
@@ -29,9 +26,7 @@ public class FeedController {
         this.feedService = feedService;
     }
 
-    /**
-     * Returns a personalized discovery feed excluding items the user has already swiped on.
-     */
+
     @GetMapping
     @Operation(summary = "Get personalized feed", description = "Returns a personalized discovery feed excluding items the user has already swiped on")
     public ResponseEntity<List<FeedCardResponse>> getDiscoverFeed(
@@ -41,9 +36,7 @@ public class FeedController {
         return ResponseEntity.ok(feedService.getPersonalizedFeed(userId, page, size));
     }
 
-    /**
-     * Returns the user's vault (right-swiped / liked items).
-     */
+
     @GetMapping("/vault")
     @Operation(summary = "Get vault items", description = "Returns the user's vault (right-swiped / liked items)")
     public ResponseEntity<List<FeedCardResponse>> getVaultItems(
@@ -51,9 +44,7 @@ public class FeedController {
         return ResponseEntity.ok(feedService.getVaultItems(userId));
     }
 
-    /**
-     * Returns a single card by its ID.
-     */
+
     @GetMapping("/{cardId}")
     @Operation(summary = "Get card detail", description = "Returns a single feed card by its ID")
     public ResponseEntity<FeedCardResponse> getCardDetail(

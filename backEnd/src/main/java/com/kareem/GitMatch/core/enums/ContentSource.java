@@ -1,8 +1,6 @@
 package com.kareem.GitMatch.core.enums;
 
-/**
- * Identifies the origin of a feed item.
- */
+
 public enum ContentSource {
     GITHUB,
     DEVTO,

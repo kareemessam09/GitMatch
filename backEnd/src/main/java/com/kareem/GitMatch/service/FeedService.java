@@ -28,10 +28,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * Provides the discovery feed by blending repositories and news items
- * into a unified FeedCardResponse format for the mobile app.
- */
+
 @Service
 public class FeedService {
 
@@ -52,14 +49,7 @@ public class FeedService {
         this.appUserRepository = appUserRepository;
     }
 
-    /**
-     * Returns a paged discovery feed mixing repos and news items.
-     * Items are sorted by creation date (newest first).
-     *
-     * @param page the page number (0-indexed)
-     * @param size the number of items per page
-     * @return a list of unified feed card responses
-     */
+
     @Transactional(readOnly = true)
     public List<FeedCardResponse> getDiscoverFeed(int page, int size) {
         log.info("Fetching discover feed — page: {}, size: {}", page, size);
@@ -74,19 +64,12 @@ public class FeedService {
         repos.getContent().forEach(repo -> feed.add(mapRepoToCard(repo)));
         news.getContent().forEach(item -> feed.add(mapNewsToCard(item)));
 
-        // Shuffle for variety
+
         Collections.shuffle(feed);
         return feed;
     }
 
-    /**
-     * Returns a paged discovery feed filtered to items the given user has not yet swiped on.
-     *
-     * @param userId the user's ID
-     * @param page   the page number (0-indexed)
-     * @param size   the number of items per page
-     * @return a list of unswiped feed card responses
-     */
+
     @Transactional(readOnly = true)
     public List<FeedCardResponse> getPersonalizedFeed(UUID userId, int page, int size) {
         log.info("Fetching personalized feed for user {} — page: {}, size: {}", userId, page, size);
@@ -94,18 +77,18 @@ public class FeedService {
         Pageable repoPageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         Pageable newsPageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 
-        // Load user preferences for personalized filtering
+
         Page<RepositoryItem> repos;
         AppUser user = appUserRepository.findById(userId).orElse(null);
         List<String> preferredLanguages = parseCommaSeparated(user != null ? user.getPreferredLanguages() : null);
         List<String> preferredTopics = parseCommaSeparated(user != null ? user.getPreferredTopics() : null);
 
         if (!preferredLanguages.isEmpty()) {
-            // Filter repos by user's preferred languages
+
             repos = repoRepository.findPersonalizedUnswipedRepos(userId, preferredLanguages, repoPageable);
             log.info("Personalized repo query returned {} repos (filtered by languages: {})",
                     repos.getContent().size(), preferredLanguages);
-            // If filtered results are too few, supplement with unfiltered
+
             if (repos.getContent().size() < size / 2) {
                 Page<RepositoryItem> fallback = repoRepository.findProcessedUnswipedRepos(userId, repoPageable);
                 List<RepositoryItem> combined = new ArrayList<>(repos.getContent());
@@ -142,9 +125,7 @@ public class FeedService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Returns all items the user has swiped RIGHT on (their "Vault").
-     */
+
     @Transactional(readOnly = true)
     public List<FeedCardResponse> getVaultItems(UUID userId) {
         log.info("Fetching vault items for user {}", userId);
@@ -170,9 +151,7 @@ public class FeedService {
         return vault;
     }
 
-    /**
-     * Returns a single feed card by its ID (looks up both repos and news).
-     */
+
     @Transactional(readOnly = true)
     public FeedCardResponse getCardById(UUID cardId) {
         log.info("Fetching card detail for {}", cardId);

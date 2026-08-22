@@ -27,22 +27,18 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Scheduled job that fetches tech news from multiple sources.
- * AI processing is handled separately by AiBatchProcessor.
- * Fetches small batches to keep data manageable.
- */
+
 @Component
 public class NewsHarvester {
 
     private static final Logger log = LoggerFactory.getLogger(NewsHarvester.class);
 
-    /** Max items per source on startup */
+
     private static final int STARTUP_LIMIT = 5;
-    /** Max items per source on scheduled runs */
+
     private static final int SCHEDULED_LIMIT = 10;
 
-    /** Regex to extract og:image content from HTML (handles both property and name attributes) */
+
     private static final Pattern OG_IMAGE_PATTERN = Pattern.compile(
             "<meta[^>]*property=[\"']og:image[\"'][^>]*content=[\"']([^\"']+)[\"']"
             + "|<meta[^>]*content=[\"']([^\"']+)[\"'][^>]*property=[\"']og:image[\"']",
@@ -83,10 +79,7 @@ public class NewsHarvester {
         log.info("News harvest complete from all sources.");
     }
 
-    /**
-     * Backfills image_url for existing news items that have none.
-     * Scrapes the og:image meta tag from each article's page.
-     */
+
     private void backfillMissingImages() {
         List<NewsItem> missing = newsRepository.findByImageUrlIsNull();
         if (missing.isEmpty()) return;
@@ -357,9 +350,7 @@ public class NewsHarvester {
         }
     }
 
-    /**
-     * Tries to extract an image URL from media:content, media:thumbnail, or enclosure tags.
-     */
+
     private String getMediaImage(Element item) {
         // Try media:content
         NodeList mediaContent = item.getElementsByTagName("media:content");
@@ -397,10 +388,7 @@ public class NewsHarvester {
         return null;
     }
 
-    /**
-     * Scrapes the og:image meta tag from an article URL.
-     * Uses a short timeout to avoid slowing down harvesting.
-     */
+
     private String scrapeOgImage(String articleUrl) {
         if (articleUrl == null || articleUrl.isBlank()) return null;
         try {

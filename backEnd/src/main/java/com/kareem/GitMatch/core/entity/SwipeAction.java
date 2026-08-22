@@ -8,9 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Records a user's swipe action on a feed item (repository or news).
- */
+
 @Entity
 @Table(name = "swipe_actions")
 public class SwipeAction {
@@ -37,7 +35,6 @@ public class SwipeAction {
     @Column(name = "timestamp", updatable = false)
     private LocalDateTime timestamp;
 
-    // No-arg constructor required by JPA
     protected SwipeAction() {}
 
     public SwipeAction(UUID userId, UUID itemId, FeedItemType itemType, SwipeDirection direction) {
@@ -47,7 +44,6 @@ public class SwipeAction {
         this.direction = direction;
     }
 
-    // Getters
     public UUID getId() { return id; }
     public UUID getUserId() { return userId; }
     public UUID getItemId() { return itemId; }

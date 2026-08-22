@@ -20,25 +20,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Scheduled job that fetches trending/underrated repositories from GitHub
- * and persists them to the database. AI processing is handled separately
- * by the AiBatchProcessor on a controlled schedule.
- */
+
 @Component
 public class GitHubHarvester {
 
     private static final Logger log = LoggerFactory.getLogger(GitHubHarvester.class);
 
-    /** Fallback languages used when no user preferences exist */
+
     private static final List<String> DEFAULT_LANGUAGES = List.of(
             "Java", "Kotlin", "Python", "JavaScript", "TypeScript", "Go", "Rust", "C++", "Swift"
     );
 
-    /**
-     * Maps user-facing topic names to GitHub search-friendly terms.
-     * Topics that are also programming languages are handled by the language query.
-     */
+
     private static final java.util.Map<String, String> TOPIC_TO_SEARCH_TERM = java.util.Map.ofEntries(
             java.util.Map.entry("Android", "android"),
             java.util.Map.entry("iOS", "ios"),
@@ -52,12 +45,12 @@ public class GitHubHarvester {
             java.util.Map.entry("Data Science", "data-science")
     );
 
-    /** Topics that are programming languages (used as language: filter) */
+
     private static final Set<String> LANGUAGE_TOPICS = Set.of(
             "Kotlin", "Java", "Python", "TypeScript", "Rust", "Go", "Swift", "C++"
     );
 
-    /** Max repos to fetch per language on startup (small seed) */
+
     private static final int STARTUP_PER_LANGUAGE = 3;
 
     private final GitHubService gitHubService;
@@ -75,29 +68,21 @@ public class GitHubHarvester {
         this.objectMapper = objectMapper;
     }
 
-    /**
-     * Runs immediately on startup — fetches a small seed of repos (3 per language).
-     * Uses user preferences when available, falls back to defaults.
-     */
+
     @EventListener(ApplicationReadyEvent.class)
     public void onStartup() {
         log.info("App started — triggering small seed GitHub harvest...");
         harvestRepositories(STARTUP_PER_LANGUAGE);
     }
 
-    /**
-     * Runs every 2 hours to fetch more repos. Limited to 5 per language to stay manageable.
-     */
+
     @Scheduled(cron = "${gitmatch.harvester.cron.repos}")
     public void scheduledHarvest() {
         log.info("Scheduled GitHub harvest starting...");
         harvestRepositories(5);
     }
 
-    /**
-     * Resolves the set of languages and topic-based search terms from user preferences.
-     * Falls back to DEFAULT_LANGUAGES when there are no user preferences.
-     */
+
     private List<String> resolveSearchLanguages() {
         Set<String> languages = new LinkedHashSet<>();
 
@@ -128,10 +113,7 @@ public class GitHubHarvester {
         return List.copyOf(languages);
     }
 
-    /**
-     * Resolves topic-based search queries (e.g., "android", "machine-learning")
-     * from user preferences. These are searched as general keyword queries.
-     */
+
     private Set<String> resolveSearchTopics() {
         Set<String> searchTopics = new LinkedHashSet<>();
 
@@ -152,11 +134,7 @@ public class GitHubHarvester {
         return searchTopics;
     }
 
-    /**
-     * Fetches up to {@code limitPerLanguage} new repos per language/topic from GitHub.
-     * Stores avatar_url, topics, license, open issues, and OG image URL.
-     * Does NOT trigger AI processing — that happens in the AiBatchProcessor.
-     */
+
     private void harvestRepositories(int limitPerLanguage) {
         int totalNew = 0;
 
@@ -214,7 +192,7 @@ public class GitHubHarvester {
 
                 String avatarUrl = item.path("owner").path("avatar_url").asText(null);
 
-                // Extract topics array → comma-separated string
+
                 StringBuilder topicsSb = new StringBuilder();
                 JsonNode topicsNode = item.path("topics");
                 if (topicsNode.isArray()) {

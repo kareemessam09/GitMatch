@@ -9,10 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Represents an application user. Named AppUser to avoid conflicts
- * with PostgreSQL's reserved 'user' keyword.
- */
+
 @Entity
 @Table(name = "app_users")
 public class AppUser {
@@ -55,7 +52,6 @@ public class AppUser {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // No-arg constructor required by JPA
     protected AppUser() {}
 
     public AppUser(String githubUsername, String email, String displayName, String avatarUrl) {
@@ -65,7 +61,6 @@ public class AppUser {
         this.avatarUrl = avatarUrl;
     }
 
-    // Getters
     public UUID getId() { return id; }
     public String getGithubUsername() { return githubUsername; }
     public String getEmail() { return email; }
@@ -78,7 +73,6 @@ public class AppUser {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
-    // Setters for mutable fields
     public void setEmail(String email) { this.email = email; }
     public void setDisplayName(String displayName) { this.displayName = displayName; }
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }

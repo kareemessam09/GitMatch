@@ -11,10 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-/**
- * Handles interactions with the GitHub REST API, including
- * search queries and starring repositories on behalf of users.
- */
+
 @Service
 public class GitHubService {
 
@@ -29,13 +26,7 @@ public class GitHubService {
         this.properties = properties;
     }
 
-    /**
-     * Searches GitHub for underrated repositories matching the configured criteria.
-     *
-     * @param language the programming language to filter by (e.g., "Java")
-     * @param page     the result page
-     * @return the raw JSON response body from GitHub Search API
-     */
+
     public String searchRepositories(String language, int page) {
         int minStars = properties.github().minStars();
         int maxStars = properties.github().maxStars();
@@ -46,13 +37,7 @@ public class GitHubService {
         return executeSearch(query, page);
     }
 
-    /**
-     * Searches GitHub for repositories matching a topic keyword.
-     *
-     * @param topic the topic to search for (e.g., "android", "machine-learning")
-     * @param page  the result page
-     * @return the raw JSON response body from GitHub Search API
-     */
+
     public String searchByTopic(String topic, int page) {
         int minStars = properties.github().minStars();
         int maxStars = properties.github().maxStars();
@@ -88,13 +73,7 @@ public class GitHubService {
         }
     }
 
-    /**
-     * Stars a repository on GitHub using the provided access token.
-     *
-     * @param owner       the repo owner
-     * @param repo        the repo name
-     * @param accessToken the user's GitHub OAuth access token
-     */
+
     public void starRepository(String owner, String repo, String accessToken) {
         log.info("Starring repo {}/{} on GitHub", owner, repo);
         try {

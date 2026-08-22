@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.UUID;
 
-/**
- * Handles swipe actions (right/left/up) from the mobile app.
- * The user ID is always extracted from the JWT — never from the request body.
- */
+
 @RestController
 @RequestMapping("/api/v1/swipes")
 @Tag(name = "Swipes", description = "Swipe action endpoints for liking/ignoring content")
@@ -32,10 +29,7 @@ public class SwipeController {
         this.swipeService = swipeService;
     }
 
-    /**
-     * Records a new swipe action.
-     * The userId comes from the JWT, and the itemType is determined server-side.
-     */
+
     @PostMapping
     @Operation(summary = "Record swipe", description = "Records a new swipe action (RIGHT = like, LEFT = ignore, UP = more info)")
     public ResponseEntity<SwipeAction> recordSwipe(
@@ -45,9 +39,7 @@ public class SwipeController {
         return ResponseEntity.created(URI.create("/api/v1/swipes/" + saved.getId())).body(saved);
     }
 
-    /**
-     * Returns the authenticated user's right-swiped items (their "Vault").
-     */
+
     @GetMapping("/liked")
     @Operation(summary = "Get liked items", description = "Returns the authenticated user's right-swiped items (their Vault)")
     public ResponseEntity<Page<SwipeAction>> getLikedItems(

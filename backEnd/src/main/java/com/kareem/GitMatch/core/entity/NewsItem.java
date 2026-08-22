@@ -8,9 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- * Represents a news article or release note discovered by the Harvester.
- */
+
 @Entity
 @Table(name = "news_items")
 public class NewsItem {
@@ -55,7 +53,6 @@ public class NewsItem {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // No-arg constructor required by JPA
     protected NewsItem() {}
 
     public NewsItem(String sourceUrl, String title, String author,
@@ -70,7 +67,6 @@ public class NewsItem {
         this.imageUrl = imageUrl;
     }
 
-    // Getters
     public UUID getId() { return id; }
     public String getSourceUrl() { return sourceUrl; }
     public String getTitle() { return title; }
@@ -84,7 +80,6 @@ public class NewsItem {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 
-    // Setters for fields updated after creation
     public void setAiThreeBulletTldr(String aiThreeBulletTldr) {
         this.aiThreeBulletTldr = aiThreeBulletTldr;
     }

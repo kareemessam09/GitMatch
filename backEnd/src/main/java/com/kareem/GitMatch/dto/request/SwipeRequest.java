@@ -6,9 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-/**
- * Request DTO for recording a swipe action.
- */
+
 public record SwipeRequest(
     @NotNull UUID userId,
     @NotNull UUID itemId,

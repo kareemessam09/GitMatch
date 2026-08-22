@@ -15,9 +15,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Global exception handler for consistent error responses.
- */
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -65,7 +63,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNoResourceFound(NoResourceFoundException ex) {
-        // Silently return 404 — no logging needed for missing static files (favicon.ico, etc.)
+
         return buildResponse(HttpStatus.NOT_FOUND, "Resource not found.");
     }
 

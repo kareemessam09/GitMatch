@@ -16,16 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Steady-stream AI processor: processes exactly ONE item every 30 seconds.
- * <p>
- * Gemini free tier allows ~15 requests/minute. By sending 1 request every
- * ~30+ seconds (fixedDelay waits for completion before counting), we stay
- * safely at ~6 req/min — zero quota issues guaranteed.
- * <p>
- * Priority: unprocessed repos first, then news. Alternates automatically.
- * Starts 3 seconds after boot and keeps ticking indefinitely.
- */
+
 @Component
 public class AiBatchProcessor {
 
@@ -48,10 +39,7 @@ public class AiBatchProcessor {
         this.objectMapper = objectMapper;
     }
 
-    /**
-     * Ticks every 30 seconds (after the previous call finishes).
-     * Picks exactly 1 unprocessed item and sends it to Gemini.
-     */
+
     @Scheduled(fixedDelay = 30_000, initialDelay = 10_000)
     public void processNextItem() {
         if (processRepoNext) {
@@ -187,9 +175,7 @@ public class AiBatchProcessor {
         }
     }
 
-    /**
-     * Strips markdown code fences that Gemini sometimes wraps around JSON.
-     */
+
     private String cleanJsonResponse(String text) {
         if (text == null) return null;
         text = text.trim();

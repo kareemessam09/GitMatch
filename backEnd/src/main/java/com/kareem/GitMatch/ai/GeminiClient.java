@@ -11,10 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-/**
- * Handles all HTTP communication with the Google Gemini API.
- * No other class should call the Gemini API directly.
- */
+
 @Component
 public class GeminiClient {
 
@@ -29,14 +26,7 @@ public class GeminiClient {
         this.properties = properties;
     }
 
-    /**
-     * Sends a prompt to the Gemini API and returns the response.
-     * Returns null (instead of throwing) on 429 rate-limit errors
-     * so the batch processor can gracefully skip and retry next cycle.
-     *
-     * @param prompt the text prompt to send
-     * @return the Gemini API response, or null if rate-limited
-     */
+
     public GeminiResponse generate(String prompt) {
         String model = properties.ai().gemini().model();
         String apiKey = properties.ai().gemini().apiKey();
